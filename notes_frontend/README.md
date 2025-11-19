@@ -1,82 +1,58 @@
-# Lightweight React Template for KAVIA
+# Notes Frontend (Ocean Professional)
 
-This project provides a minimal React template with a clean, modern UI and minimal dependencies.
+A modern, responsive single‑page notes manager built with React. It features a header, a sidebar for the notes list, and a main editor/view panel. Data is stored in localStorage for now. Environment variables are read to prepare for future backend integration.
+
+## Quick Start
+
+- Install: `npm install`
+- Run dev server: `npm start`
+  - App runs at http://localhost:3000
 
 ## Features
 
-- **Lightweight**: No heavy UI frameworks - uses only vanilla CSS and React
-- **Modern UI**: Clean, responsive design with KAVIA brand styling
-- **Fast**: Minimal dependencies for quick loading times
-- **Simple**: Easy to understand and modify
+- Responsive layout: header, sidebar, main editor
+- Create, edit, delete notes in‑memory with localStorage persistence
+- Ocean Professional theme:
+  - primary #2563EB, secondary/success #F59E0B, error #EF4444
+  - background #f9fafb, surface #ffffff, text #111827
+  - subtle gradients, shadows, rounded corners, smooth transitions
+- Env‑based configuration stubs (no backend calls yet)
+- Optional experiments UI via feature flags
 
-## Getting Started
+## Environment Variables
 
-In the project directory, you can run:
+Define these in a `.env` file at the project root (see `.env.example`):
 
-### `npm start`
+- REACT_APP_API_BASE: Base URL for future backend API. If set, the app logs intended endpoints.
+- REACT_APP_FEATURE_FLAGS: JSON array, e.g. `["experiments"]`
+- REACT_APP_EXPERIMENTS_ENABLED: "true" to enable experiments related UI
 
-Runs the app in development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Additional container vars recognized by the environment but not explicitly used here yet:
+REACT_APP_BACKEND_URL, REACT_APP_FRONTEND_URL, REACT_APP_WS_URL, REACT_APP_NODE_ENV, REACT_APP_NEXT_TELEMETRY_DISABLED, REACT_APP_ENABLE_SOURCE_MAPS, REACT_APP_PORT, REACT_APP_TRUST_PROXY, REACT_APP_LOG_LEVEL, REACT_APP_HEALTHCHECK_PATH
 
-### `npm test`
+## Accessibility
 
-Launches the test runner in interactive watch mode.
+- Buttons and inputs include descriptive aria‑labels.
+- Keyboard focus states are visible.
+- Landmarks: header (role=banner), nav (aria-label), main (role=main), footer (role=contentinfo).
 
-### `npm run build`
+## Project Structure
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- `src/App.js`: App shell, components (Header, NotesList, NoteItem, NoteEditor), state and CRUD
+- `src/App.css`: Theme variables and styles
+- `src/index.js`: App entrypoint
 
-## Customization
+## Notes Storage
 
-### Colors
+- Stored under `localStorage` key: `notes_app_items_v1`
+- Initial mock note created when no notes exist
 
-The main brand colors are defined as CSS variables in `src/App.css`:
+## Future Integration
 
-```css
-:root {
-  --kavia-orange: #E87A41;
-  --kavia-dark: #1A1A1A;
-  --text-color: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --border-color: rgba(255, 255, 255, 0.1);
-}
-```
+When a backend is available, use `process.env.REACT_APP_API_BASE` and replace the localStorage layer with fetch calls to:
+- GET `${REACT_APP_API_BASE}/notes`
+- POST `${REACT_APP_API_BASE}/notes`
+- PUT `${REACT_APP_API_BASE}/notes/:id`
+- DELETE `${REACT_APP_API_BASE}/notes/:id`
 
-### Components
-
-This template uses pure HTML/CSS components instead of a UI framework. You can find component styles in `src/App.css`. 
-
-Common components include:
-- Buttons (`.btn`, `.btn-large`)
-- Container (`.container`)
-- Navigation (`.navbar`)
-- Typography (`.title`, `.subtitle`, `.description`)
-
-## Learn More
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+No changes are required to the UI to enable this swap.
